@@ -1,5 +1,25 @@
-<ul>
-    <li ng-repeat="recipe in recipes">
-        {{ recipe.name }}
-    </li>
-</ul>
+<!-- <aside class="flash row">
+  <article flash-alert duration="0" active-class="alert" class="col-md-6 col-md-offset-3 col-sm-12">
+    {{flash.message}}
+  </article>
+</aside> -->
+
+
+
+<section class="col-md-6 col-md-offset-3">
+  <article class="panel panel-info" ng-repeat="recipe in recipes">
+    <header class="panel-heading">
+      <h1>
+        <a href="#/recipes/{{ recipe.id }}">
+          {{recipe.name}}
+        </a>
+      </h1>
+    </header>
+    <p class="panel-body">
+      {{recipe.directions}}
+    </p>
+    <p class="panel-body">
+      {{recipe.description}}
+    </p>
+  </article>
+</section>
