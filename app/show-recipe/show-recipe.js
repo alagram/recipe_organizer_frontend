@@ -33,4 +33,18 @@ angular.module('myApp.showRecipe', ['ngRoute'])
       $scope.commentBody = '';
     }
 
+    $scope.deleteRecipe = function(){
+      var confirmation = confirm("Are you sure?");
+
+      if (confirmation) {
+        Restangular.one('recipes', $scope.recipeId).customDELETE().then(function() {
+          alert("Your recipe was successfully deleted!");
+          $location.path("/recipes");
+        },
+        function(){
+          alert("Something went wrong. Please try again.")
+        })
+      }
+    }
+
   }]);

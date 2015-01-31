@@ -5,11 +5,16 @@
       <p class="panel-body">
         {{recipe.directions}}
       </p>
+
+      <p class="panel-body">
+        <button class="btn btn-primary btn-xs">Edit</button>
+        |
+        <button class="btn btn-danger btn-xs" ng-click="deleteRecipe()">Delete</button>
+      </p>
     </article>
-    {{recipe.ingredients}}
   </section>
 
-<br>
+  <br>
 
   <div class="form-group col-md-6 col-md-offset-3 text-center">
     <textarea ng-model="commentBody" rows="4" class="form-control" placeholder="Add comment" autofocus=""></textarea>
@@ -19,15 +24,13 @@
     <button ng-click="postComment()" class="btn btn-primary">add comment</button>
   </div>
 
-
-  <section class="col-md-6 col-md-offset-3" ng-repeat="comment in recipe.comments">
+  <section class="col-md-6 col-md-offset-3" ng-repeat="comment in (recipe.comments | orderBy:'created_at':true)">
     <div class="well well-sm">
       <em>{{ comment.body }}</em>
       <br>
       <p class="text-muted">created at {{ comment.created_at | date:'medium' }}</p>
     </div>
   </section>
-
 
   <section class="col-md-6 col-md-offset-3" ng-if="recipe.comments.length === 0">
     <p class="text-muted text-center">Be the first to add a comment...</p>
