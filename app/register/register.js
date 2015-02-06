@@ -9,7 +9,16 @@ angular.module('myApp.register', ['ngRoute'])
   }])
 
   .controller('RegisterCtrl', ['$scope', '$location', 'Authentication', function($scope, $location, Authentication){
+
+    activate();
+
     $scope.register = function(){
       Authentication.register($scope.email, $scope.password, $scope.username);
+    }
+
+    function activate() {
+      if (Authentication.isAuthenticated()) {
+        $location.url('/recipes');
+      }
     }
   }])

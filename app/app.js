@@ -9,7 +9,8 @@ angular.module('myApp', [
   'myApp.showRecipe',
   'myApp.version',
   'restangular',
-  'myApp.register'
+  'myApp.register',
+  'myApp.login'
 ]).
 config(['$routeProvider', 'RestangularProvider', function($routeProvider, RestangularProvider) {
   $routeProvider.otherwise({redirectTo: '/recipes'});
