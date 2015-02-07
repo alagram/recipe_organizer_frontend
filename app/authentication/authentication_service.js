@@ -1,28 +1,32 @@
 'use strict';
 
-angular.module('myApp.recipes', ['ngCookies'])
-  .factory('Authentication', ['$cookies', 'Restangular', function($cookies, Restangular){
+angular.module('myApp.Authentication', ['ngCookies'])
+  .factory('Authentication', ['$rootScope', '$cookieStore', 'Restangular', function($rootScope, $cookieStore, Restangular){
     var Authentication = {
       getAuthenticatedAccount: getAuthenticatedAccount,
       isAuthenticated: isAuthenticated,
       register: register,
       login: login,
+      logout: logout,
       setAuthenticatedAccount: setAuthenticatedAccount,
       unauthenticate: unauthenticate
     };
 
+    $rootScope.signedIn = function(){
+      return Authentication.isAuthenticated();
+    }
+
     return Authentication;
 
     function getAuthenticatedAccount() {
-      if (!$cookies.authenticatedAccount) {
+      if (!$cookieStore.get('authenticatedAccount')) {
         return;
       }
-
-      return JSON.parse($cookies.authenticatedAccount);
+      return JSON.parse($cookieStore.get('authenticatedAccount'));
     }
 
     function isAuthenticated() {
-      return !!$cookies.authenticatedAccount;
+      return !!$cookieStore.get('authenticatedAccount');
     }
 
     function login(email, password) {
@@ -32,13 +36,27 @@ angular.module('myApp.recipes', ['ngCookies'])
       }).then(loginSuccessFn, loginErrorFn);
 
       function loginSuccessFn(data, status, headers, config) {
-        Authentication.setAuthenticatedAccount(data.data);
+        Authentication.setAuthenticatedAccount(data);
 
-        window.location = '/recipes';
+        window.location = '/app';
       }
 
       function loginErrorFn(data, status, headers, config) {
         console.log('Something bad happened!');
+      }
+    }
+
+    function logout() {
+      return Restangular.all('api/v1/auth/logout/').customPOST().then(logoutSuccessFn, logoutErrorFn);
+
+      function logoutSuccessFn(data, status, headers, config) {
+        Authentication.unauthenticate();
+        console.log("logged out");
+        window.location = "/app";
+      }
+
+      function logoutErrorFn(data, status, headers, config) {
+        console.log("Something bad happened!");
       }
     }
 
@@ -59,10 +77,10 @@ angular.module('myApp.recipes', ['ngCookies'])
     }
 
     function setAuthenticatedAccount(account) {
-      $cookies.authenticatedAccount = JSON.stringify(account);
+      $cookieStore.put('authenticatedAccount', JSON.stringify(account));
     }
 
     function unauthenticate() {
-      delete $cookies.authenticatedAccount;
+      $cookieStore.remove('authenticatedAccount');
     }
   }])

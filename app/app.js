@@ -9,10 +9,17 @@ angular.module('myApp', [
   'myApp.showRecipe',
   'myApp.version',
   'restangular',
+  'myApp.Authentication',
   'myApp.register',
-  'myApp.login'
+  'myApp.login',
+  'myApp.navbar'
 ]).
 config(['$routeProvider', 'RestangularProvider', function($routeProvider, RestangularProvider) {
   $routeProvider.otherwise({redirectTo: '/recipes'});
   RestangularProvider.setBaseUrl('http://localhost:8001');
-}]);
+}])
+.run(['$http', function($http){
+  $http.defaults.xsrfHeaderName = 'X-CSRFToken';
+  $http.defaults.xsrfCookieName = 'csrftoken';
+}])
+;

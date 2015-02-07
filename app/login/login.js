@@ -17,7 +17,7 @@ angular.module('myApp.login', ['ngRoute'])
 
     function activate() {
       if (Authentication.isAuthenticated()) {
-        $location.url('/recipes');
+        $location.path('/recipes');
       }
     }
   }])

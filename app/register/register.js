@@ -18,7 +18,7 @@ angular.module('myApp.register', ['ngRoute'])
 
     function activate() {
       if (Authentication.isAuthenticated()) {
-        $location.url('/recipes');
+        $location.url('/');
       }
     }
   }])
